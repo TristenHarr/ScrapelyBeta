@@ -1,0 +1,133 @@
+{% extends 'User/base.html' %}
+{% block body %}
+<div id="Export" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="justify-content: center;">
+                <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                    <dl>
+                        {{ render_field(form.traininga) }}
+                        <br>
+                        {{ render_field(form.trainingb) }}
+                        <br>
+                    </dl>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success" style="width: 50%;font-size: 20px;"
+                                value="TwitterConfig" name="btn">Submit
+                        </button>
+                        <br>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="Test" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="justify-content: center;">
+                <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                    <dl>
+                        {{ render_field(form2.controla) }}
+                        <br>
+                        {{ render_field(form2.controlb) }}
+                        <br>
+                        {{ render_field(form2.testinga) }}
+                        <br>
+                        {{ render_field(form2.testingb) }}
+                        <br>
+                    </dl>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success" style="width: 50%;font-size: 20px;"
+                                value="TwitterConfig">Submit
+                        </button>
+                        <br>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="TestMulti" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="justify-content: center;">
+                <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                    <dl>
+                        {{ render_field(form2.controla) }}
+                        <br>
+                        {{ render_field(form2.controlb) }}
+                        <br>
+                        {{ render_field(form2.testinga) }}
+                        <br>
+                        {{ render_field(form2.testingb) }}
+                        <br>
+                    </dl>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success" style="width: 50%;font-size: 20px;"
+                                value="TwitterConfig">Submit
+                        </button>
+                        <br>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="button-group" role="group" style="padding-top: 10%; margin: 0 auto;">
+    <button class="btn btn-default" data-toggle="modal" data-target="#Export">Train Model</button>
+    <button class="btn btn-default" data-toggle="modal" data-target="#Test">Test Model</button>
+    <button class="btn btn-default" data-toggle="modal" data-target="#TestMulti">Test Multi-Model</button>
+</div>
+<div class="container-fluid">
+    <h2 style="text-align: center;">My Models</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Model</th>
+            <!--<th>View Super-Table</th>-->
+            <th>Delete Model</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for model in session.models %}
+        <tr>
+            <td>{{ model }}</td>
+            <td><a href="/training/delete/{{ model }}"><span class="glyphicon glyphicon-trash" aria-hidden="true"
+                                                                 style="float: right;"></span>&nbsp; Delete</a></td>
+
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

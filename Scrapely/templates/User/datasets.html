@@ -1,0 +1,113 @@
+{% extends 'User/base.html' %}
+{% from "Arrival/_formhelpers.html" import render_field %}
+{% block body %}
+
+    <div id="AddTable" class="modal fade" role="dialog" style="margin: 0 auto;">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add A Table</h4>
+                </div>
+                <div class="modal-body" style="justify-content: center;">
+                     <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                          <dl>
+                            {{ render_field(form.limit) }}
+                              <br>
+                            {{ render_field(form.limit_type) }}
+                              <br>
+                              {{ render_field(form.keywords) }}
+                               <br>
+                              {{ render_field(form.table) }}
+                              <br>
+                              {{ render_field(form.password) }}
+                          </dl>
+                        <div class="form-group">
+                                <button type="submit" class="btn btn-success" style="width: 50%;font-size: 20px;" value="TwitterConfig">Submit</button>
+                            <br>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="Export" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+ <div class="modal-body" style="justify-content: center;">
+                     <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                          <dl>
+                              {{ render_field(form2.table) }}
+                              <br>
+                            {{ render_field(form2.choice) }}
+                              <br>
+                          </dl>
+                        <div class="form-group">
+                                <button type="submit" class="btn btn-success" style="width: 50%;font-size: 20px;" value="TwitterConfig">Submit</button>
+                            <br>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="button-group" role="group" style="padding-top: 10%; margin: 0 auto;">
+    <button type="submit" class="btn btn-default" data-toggle="modal" data-target="#AddTable">Add Table</button>
+    <button class="btn btn-default" data-toggle="modal" data-target="#Export">Export Table</button>
+    </div>
+    <div class="container-fluid">
+    {% if loading %}
+        {% if loading.limit_t == "TIME" %}
+            <br>
+            <p><strong>The scraper is currently storing tweets in the table {{ loading.table }} and will run for {{ loading.limit }} seconds.</strong>
+            </p>
+            <br>
+            {% else %}
+            <br>
+            <p><strong>The scraper is currently storing tweets in the table {{ loading.table }} and will collect {{ loading.limit }} tweets.</strong>
+            </p>
+            <br>
+            {% endif %}
+    {% endif %}
+    <h2 style="text-align: center;">My Tables</h2>
+    <table class="table">
+        <thead>
+        <tr>
+        <th>Table</th>
+        <th>Items</th>
+        <th>Keywords</th>
+        <!--<th>View Super-Table</th>-->
+        <th>View Table</th>
+        <th>Delete Table</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in session.table_count_keywords %}
+            <tr>
+            <td>{{ item.0 }}</td>
+                <td>{{ item.1 }}</td>
+                <td>{{ item.2 }}</td>
+                <!--<td><a href="/datasets/SUPERTABLE/{{ item.0 }}/view" target="_blank"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" style="float: right;"></span>&nbsp; View Supertable</a></td>-->
+                <td><a href="/datasets/view/{{ item.0 }}" target="_blank"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" style="float: right;"></span>&nbsp; View {{ table }}</a></td>
+                <td><a href="/datasets/delete/{{ item.0 }}"><span class="glyphicon glyphicon-trash" aria-hidden="true" style="float: right;"></span>&nbsp; Delete {{ table }}</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+{% endblock %}

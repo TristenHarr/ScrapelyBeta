@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Leckerli+One|UnifrakturCook:700" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="popover"]').popover();
+            $('#navnav').height($(window).height());
+            $('#overlay').hide();
+        });
+
+             $(document).ready(function(){
+    $("#hide").click(function(){
+        $("#navnav").hide();
+        $("#overlay").show();
+        $('.col-sm-7, .col-sm-10').toggleClass("col-sm-7 col-sm-10");
+    });
+    $("#show").click(function(){
+        $("#navnav").show();
+         $("#overlay").hide();
+         $('.col-sm-7, .col-sm-10').toggleClass("col-sm-7 col-sm-10");
+    });
+    });
+
+    </script>
+    <style type="text/css">
+        .hovs:hover {
+            cursor: hand;
+            cursor: pointer;
+        }
+    </style>
+</head>
+{% from "Arrival/_formhelpers.html" import render_field %}
+<body>
+<div class="col-sm-3" style="background: aquamarine; margin: 0;" id="navnav">
+    <div id="ProfileEdit" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Edit Profile</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="container-fluid">
+        <div class="panel-group" style="margin-top: 10%;">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title hovs" style="text-align: center;" id="hide">
+                        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" style="text-align: center;"></span>&nbsp;Hide
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="panel-group" style="margin-top: 10%;">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title hovs" style="text-align: center;" data-toggle="collapse" href="#profile">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true" style="float: right;"></span>&nbsp;&nbsp;Profile
+                    </h3>
+                </div>
+                <div id="profile" class="panel-collapse collapse">
+                    <ul class="list-group" style="text-align: center;list-style=type: none;">
+                        <li class="list-group-item"><strong>Welcome, {{ session.username }}</strong></li>
+                        <li class="list-group-item"><span class="glyphicon glyphicon-envelope" aria-hidden="true" style="float: left;"></span>{{ session.email }}</li>
+                        <li><a class="btn btn-danger" style="width: 100%; height: 100%;" href="/logout">
+                    <h3 class="panel-title" style="text-align: center;">
+                        <span class="glyphicon glyphicon-off" aria-hidden="true" style="float: right;"></span>&nbsp;&nbsp;Logout
+                    </h3>
+                </a></li>
+                    </ul>
+                    <!--<div class="panel-footer" style="text-align: center;"><a href="#" data-toggle="modal" data-target="#ProfileEdit"><span class="glyphicon glyphicon-edit" aria-hidden="true" style="float: left;"></span>Edit Profile Information</a></div>-->
+                </div>
+            </div>
+        </div>
+        <!--<div class="panel-group">-->
+            <!--<div class="panel panel-default">-->
+                <!--<div class="panel-heading">-->
+                    <!--<h3 class="panel-title hovs" style="text-align: center;" data-toggle="collapse" href="#charts">-->
+                        <!--<span class="glyphicon glyphicon-stats" aria-hidden="true" style="float: right;"></span>&nbsp;&nbsp;Charts-->
+                    <!--</h3>-->
+                <!--</div>-->
+
+                <!--<div id="charts" class="panel-collapse collapse">-->
+                    <!--<ul class="list-group" style="text-align: center;">-->
+                        <!--<li class="list-group-item"><strong><a href="/charts" class="btn btn-primary">All Charts</a></strong></li>-->
+                        <!--<li class="list-group-item">You Don't Have Any Charts!</li>-->
+                    <!--</ul>-->
+                    <!--<div class="panel-footer" style="text-align: center;">-->
+                        <!--<form class="navbar-form" role="search" method="get" action="#">-->
+                            <!--<input type="text" class="form-control" name="q" value="" style="width: 100%;">-->
+                            <!--<p></p>-->
+                            <!--<button type="submit" class="btn">Search Charts</button>-->
+                        <!--</form>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="panel-group">-->
+            <!--<div class="panel panel-default">-->
+                <!--<div class="panel-heading">-->
+                    <!--<h3 class="panel-title hovs" style="text-align: center;" data-toggle="collapse" href="#models" onclick="mymanager('data_models', 'datamodels');" >-->
+                        <!--<span class="glyphicon glyphicon-wrench" aria-hidden="true" style="float: right;"></span>&nbsp;&nbsp;ML Models-->
+                    <!--</h3>-->
+                <!--</div>-->
+
+                <!--<div id="models" class="panel-collapse collapse">-->
+                    <!--<table width="100%" style="margin: 0 10px;text-align: left;" id="datamodels">-->
+                        <!--{% if session.table_count_keywords|length < 1 %}-->
+                        <!--<tr><td class="list-group-item">You Don't Have Any Models!</td></tr>-->
+                        <!--{% else %}-->
+                        <!--<tr class="header"><th><input type="text" id="data_models" onkeyup="mymanager('data_models','datamodels')" placeholder="Search.." title="Type in a dataset" style="width: 80%;margin: 10px 10%;text-align: center;"></th></tr>-->
+                            <!--{% for table in session.table_count_keywords %}-->
+                        <!--<tr><td style="width: 80%;"><strong>{{ table.0 }}</strong></td><td><a href="/datasets/view/{{ table.0 }}" target="_blank"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" style="float: left;"></span></a></td></tr>-->
+                            <!--{% endfor %}-->
+                        <!--{% endif %}-->
+                    <!--</table>-->
+                    <!--<div class="panel-footer" style="text-align: center;">-->
+                        <!--<strong style="text-align: center;"><a href="/models" class="btn btn-primary" style="margin: 10px 10%; width: 80%;">All Models</a></strong>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title hovs" style="text-align: center;" data-toggle="collapse" href="#data" onclick="mymanager('data_sets', 'datatable');" >
+                        <span class="glyphicon glyphicon-tasks" aria-hidden="true" style="float: right;"></span>&nbsp;&nbsp;Datasets
+                    </h3>
+                </div>
+
+                <div id="data" class="panel-collapse collapse">
+                    <table width="100%" style="text-align: left;" id="datatable">
+                        {% if session.table_count_keywords|length < 1 %}
+                        <tr><td class="list-group-item">You Don't Have Any Datasets!</td></tr>
+                        {% else %}
+                        <tr class="header"><th colspan="3"><input type="text" id="data_sets" onkeyup="mymanager('data_sets','datatable')" placeholder="Search.." title="Type in a dataset" style="width: 80%;margin: 10px 10%;text-align: center;"></th></tr>
+                            {% for table in session.table_count_keywords %}
+                        <tr><td style="width: 45%;text-align: center;"><strong>{{ table.0 }}</strong></td><td style="text-align: center;width: 35%;">{{ table.1 }}/1000</td><td><a href="/datasets/view/{{ table.0 }}" target="_blank"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" style="float: left;"></span></a></td></tr>
+                            {% endfor %}
+                        {% endif %}
+                    </table>
+                    <div class="panel-footer" style="text-align: center;">
+                        <strong style="text-align: center;"><a href="/datasets" class="btn btn-primary" style="margin: 10px 10%; width: 80%;">All Datasets</a></strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title hovs" style="text-align: center;" data-toggle="collapse" href="#sources">
+                        <span class="glyphicon glyphicon-filter" aria-hidden="true" style="float: right;"></span>&nbsp;&nbsp;Data Sources
+                    </h3>
+                </div>
+
+                <div id="sources" class="panel-collapse collapse">
+                    <ul class="list-group" style="text-align: center;">
+                        <li class="list-group-item"><strong><a href="/datasources" class="btn btn-primary">Configure Data Sources</a></strong></li>
+                        {% if session.data_sources|length < 1 %}
+                            <li class="list-group-item">You Don't Have Any DataSources!</li>
+                        {% else %}
+                            {% for source in session.data_sources %}
+                                <li class="list-group-item"><strong>{{ source }}</strong></li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                    <div class="panel-footer" style="text-align: center;">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title hovs" style="text-align: center;" data-toggle="collapse" href="#models"
+                        onclick="mymanager('models', 'modeltable');">
+                        <span class="glyphicon glyphicon-globe" aria-hidden="true" style="float: right;"></span>&nbsp;&nbsp;ML Models
+                    </h3>
+                </div>
+
+                <div id="models" class="panel-collapse collapse">
+                    <table width="100%" style="text-align: left;" id="modeltable">
+                        {% if session.models|length < 1 %}
+                        <tr>
+                            <td class="list-group-item">You Don't Have Any Models!</td>
+                        </tr>
+                        {% else %}
+                        <tr class="header">
+                            <th><input type="text" id="model"
+                                                   onkeyup="mymanager('model','modeltable')" placeholder="Search.."
+                                                   title="Type in a dataset"
+                                                   style="width: 80%;margin: 10px 10%;text-align: center;"></th>
+                        </tr>
+                        {% for model in session.models %}
+                        <tr>
+                            <td style="width: 45%;text-align: center;"><strong>{{ model }}</strong></td>
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </table>
+                    <div class="panel-footer" style="text-align: center;">
+                        <strong style="text-align: center;"><a href="/training" class="btn btn-primary"
+                                                               style="margin: 10px 10%; width: 80%;">All
+                            Models</a></strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div class="panel-group">-->
+            <!--<div class="panel panel-default">-->
+                <!--<div class="panel-heading">-->
+                    <!--<h3 class="panel-title hovs" style="text-align: center;" data-toggle="collapse" href="#projects">-->
+                        <!--<span class="glyphicon glyphicon-folder-open" aria-hidden="true" style="float: right;"></span>&nbsp;&nbsp;Projects-->
+                    <!--</h3>-->
+                <!--</div>-->
+
+                <!--<div id="projects" class="panel-collapse collapse">-->
+                    <!--<ul class="list-group" style="text-align: center;">-->
+                        <!--<li class="list-group-item"><strong><a href="/projects" class="btn btn-primary">All Projects</a></strong></li>-->
+                        <!--<li class="list-group-item">You Don't Have Any Projects!</li>-->
+                    <!--</ul>-->
+                    <!--<div class="panel-footer" style="text-align: center;">-->
+                        <!--<form class="navbar-form" role="search" method="get" action="#">-->
+                            <!--<input type="text" class="form-control" name="q" value="" style="width: 100%;">-->
+                            <!--<p></p>-->
+                            <!--<button type="submit" class="btn">Search Projects</button>-->
+                        <!--</form>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="panel-group">-->
+            <!--<div class="panel panel-default">-->
+                <!--<div class="panel-heading">-->
+                    <!--<h3 class="panel-title hovs" style="text-align: center;" data-toggle="collapse" href="#groups">-->
+                        <!--<span class="glyphicon glyphicon-globe" aria-hidden="true" style="float: right;"></span>&nbsp;&nbsp;Groups-->
+                    <!--</h3>-->
+                <!--</div>-->
+
+                <!--<div id="groups" class="panel-collapse collapse">-->
+                    <!--<ul class="list-group" style="text-align: center;">-->
+                        <!--<li class="list-group-item"><strong><a href="/groups" class="btn btn-primary">Find A Group</a></strong></li>-->
+                        <!--<li class="list-group-item">You aren't in any groups!</li>-->
+                    <!--</ul>-->
+                    <!--<div class="panel-footer" style="text-align: center;">-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+</div>
+<div class="col-sm-1" style="background-color: red; height: 1000px;"><div id="overlay">
+    <button class="btn btn-primary" id="show" style="margin-top: 10px; margin-left: 10px;">Settings</button>
+</div></div>
+<div class="col-sm-7">
+    {% block body %}
+    {%  endblock %}
+</div>
+<div class="col-sm-1" style="background-color: red; height: 1000px;"></div>
+</body>
+<script>
+function mymanager(inpval, tabval) {
+    var array, tr, table, i;
+    array = datasets(inpval, tabval);
+    table = document.getElementById(tabval);
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < array.length; i++) {
+        if (i < 5) {
+            tr[array[i]].style.display = "";
+        } else {
+            tr[array[i]].style.display = "none";
+        }
+
+    }
+}
+
+function datasets(inpval, tabval) {
+    var input, filter, table, tr, td, i, maybe;
+    maybe = [];
+    input = document.getElementById(inpval);
+    filter = input.value.toUpperCase();
+    table = document.getElementById(tabval);
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+            if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                maybe.push(i);
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+    return maybe;
+}
+</script>
+</html>

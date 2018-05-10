@@ -1,0 +1,44 @@
+{% extends 'Arrival/basearrive.html' %}
+{% from "Arrival/_formhelpers.html" import render_field %}
+{% block title %}Login{% endblock %}
+{% block body %}
+    <div class="container-fluid" style="margin: auto; padding: 10%;">
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h1 style="text-align: center;">Sign-Up</h1>
+<br><br>
+                <div style="text-align: center; align-content: center; alignment: center;">
+                    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                          <dl>
+                            {{ render_field(form.username) }}
+                               {% if nameerror %}
+                                   <br>
+                                   <div class="alert alert-warning">
+                                       <strong>{{ nameerror }}</strong>
+                                   </div>
+                               {% endif %}
+                            {{ render_field(form.email) }}
+                            {{ render_field(form.password) }}
+                            {{ render_field(form.confirm) }}
+                          <br>
+                            {{ render_field(form.accept_tos) }}
+                          </dl>
+                        <div class="form-group">
+
+                                <button type="submit" class="btn btn-success" style="width: 50%;font-size: 20px;" value="Register">Sign Up</button>
+                            <br>
+
+                                <br>
+                                <a href="login"  class="btn btn-primary" style="width: 50%;font-size: 15px;">I already have an account</a>
+                        </div>
+                    </form>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

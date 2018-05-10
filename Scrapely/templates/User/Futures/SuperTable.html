@@ -1,0 +1,348 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Leckerli+One|UnifrakturCook:700" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="popover"]').popover();
+            $('#navnav').hide();
+            $('.col-sm-9, .col-sm-11').toggleClass("col-sm-9 col-sm-11");
+            $('#navnav').height($(window).height());
+            $('#mytble').height($(window).height());
+            $('#cps').height($(window).height());
+                $("#hide").click(function(){
+        $("#navnav").hide();
+        $("#overlay").show();
+        $("#cps").show();
+        $('.col-sm-9, .col-sm-11').toggleClass("col-sm-9 col-sm-11");
+        $('.nots, .col-sm-1').toggleClass("nots col-sm-1");
+    });
+    $("#show").click(function(){
+        $("#navnav").show();
+         $("#overlay").hide();
+         $("#cps").hide();
+         $('.col-sm-9, .col-sm-11').toggleClass("col-sm-9 col-sm-11");
+         $('.nots, .col-sm-1').toggleClass("nots col-sm-1");
+    });
+        });
+    </script>
+    <script type="text/javascript">
+        String.prototype.format = function() {
+    var formatted = this;
+    for( var arg in arguments ) {
+        formatted = formatted.replace("{" + arg + "}", arguments[arg]);
+    }
+    return formatted;
+};
+        var mymap = {};
+        var mycolumnarray = [];
+        function row_loader(x){
+            var i, mystr, myval;
+            for (i=1; i<x; i++){
+                mystr = "{0}'{1}".format(0,i);
+                myval = document.getElementById(mystr).innerHTML;
+                mymap[myval] = [];
+                mycolumnarray.push(myval);
+            }
+        }
+
+        function supersearcher(inpval, tabval, indice){
+            mymanager(inpval, tabval, indice);
+            var index, myarray, table, tr, item, i;
+            myarray = [];
+            table = document.getElementById(tabval);
+            tr = table.getElementsByTagName("tr");
+            for (index in mymap){
+                myarray = myarray.concat(mymap[index]);
+            }
+            for (i = 3; i < tr.length; i++) {
+                if (myarray.includes(i)){
+                tr[i].style.display = "none";
+                } else {
+                tr[i].style.display = "";
+                }
+    }
+        }
+
+        function mymanager(inpval, tabval, indice) {
+        var input, filter, table, tr, td, i;
+        input = document.getElementById(inpval);
+        filter = input.value.toUpperCase();
+        table = document.getElementById(tabval);
+        tr = table.getElementsByTagName("tr");
+        mymap[inpval] = [];
+        for (i=0; i < tr.length; i++){
+            td = tr[i].getElementsByTagName("td")[indice];
+            if (td){
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1){
+                } else {
+                    mymap[inpval].push(i);
+                    }
+                }
+            }
+        }
+
+        function alerts(x){
+            alert(x);
+        }
+    </script>
+    <script>
+        $(window).scroll(function(){
+    $('#myheadd').css({
+        'top': $(this).scrollTop() + 15 //Why this 15, because in the CSS, we have set left 15, so as we scroll, we would want this to remain at 15px left
+    });
+});</script>
+    <style type="text/css">
+        .hovs:hover {
+            cursor: hand;
+            cursor: pointer;
+        }
+
+        #myTable {
+        border-collapse: collapse;
+        width: 100%;
+        border: 1px solid #ddd;
+        font-size: 18px;
+        }
+
+        #myTable th, #myTable td {
+        text-align: left;
+        padding: 12px;
+        }
+
+        #myTable tr {
+        border-bottom: 1px solid #ddd;
+        }
+
+        #myTable tr.header, #myTable tr:hover {
+        background-color: #f1f1f1;
+        }
+
+    </style>
+    {% from "Arrival/_formhelpers.html" import render_field %}
+</head>
+<body style="height: 100%;" onload="row_loader('{{superdata.0.1+1}}')">
+
+<div class="col-sm-3" style="background-color: red;" id="navnav">
+    <div class="container-fluid" style="padding-right: 0; padding-left: 0;">
+    <div class="panel-group" style="margin-top: 10%;">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a href="/home">
+                    <h3 class="panel-title hovs" style="text-align: center;" data-toggle="collapse">
+                        <span class="glyphicon glyphicon-home" aria-hidden="true" style="float: right;"></span>&nbsp;&nbsp;Home
+                    </h3>
+                    </a>
+                </div>
+            </div>
+        </div>
+    <div class="panel-group" style="margin-top: 10%;">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title hovs" style="text-align: center;" data-toggle="collapse" href="#tables">
+                        <span class="glyphicon glyphicon-list-alt" aria-hidden="true" style="float: right;"></span>&nbsp;&nbsp;My Tables
+                    </h3>
+                </div>
+
+                <div id="tables" class="panel-collapse collapse">
+                    <form class="form-horizontal" action="/datasets/SUPERTABLE/{{ table }}/select_table"  method="post" enctype="multipart/form-data">
+                    <table width="100%" style="margin: 0 10px;text-align: left;">
+                        <tr class="header"><th>
+                            <dl>
+                              {{ render_field(tableform.table) }}
+                          </dl>
+                        </th></tr>
+                    </table>
+                    <div class="panel-footer" style="text-align: center;">
+                        <strong style="text-align: center;"><button type="submit" class="btn btn-primary" style="margin: 10px 10%; width: 90%;" value="TwitterConfig">Load Table</button></strong>
+                    </div>
+                        </form>
+                </div>
+            </div>
+        </div>
+    <div class="panel-group" style="margin-top: 10%;">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title hovs" style="text-align: center;" data-toggle="collapse" href="#edit">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true" style="float: right;"></span>&nbsp;&nbsp;Edit Table
+                    </h3>
+                </div>
+
+                <div id=edit class="panel-collapse collapse">
+                   <div class="panel-group">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title hovs" style="text-align: center;" data-toggle="collapse" href="#swap">
+                        <span class="glyphicon glyphicon-sort" aria-hidden="true" style="float: right;"></span>&nbsp;&nbsp;Swap Items
+                    </h3>
+                </div>
+
+                <div id="swap" class="panel-collapse collapse">
+                    <form class="form-horizontal" action="/datasets/SUPERTABLE/{{ table }}/swap"  method="post" enctype="multipart/form-data">
+                    <table width="100%" style="margin: 0 10px;text-align: left;">
+                        <tr class="header"><th>
+                            <dl style="width: 80%;">
+                              {{ render_field(swapform.swaptype) }}
+                              {{ render_field(swapform.swapselection1) }}
+                              {{ render_field(swapform.swapselection2) }}
+                          </dl>
+                        </th></tr>
+                    </table>
+                    <div class="panel-footer" style="text-align: center;">
+                        <strong style="text-align: center;"><button type="submit" class="btn btn-primary" style="margin: 10px 10%; width: 90%;" value="TwitterConfig">Swap Selection</button></strong>
+                    </div>
+                        </form>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title hovs" style="text-align: center;" data-toggle="collapse" href="#drop">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true" style="float: right;"></span>&nbsp;&nbsp;Drop Item
+                    </h3>
+                </div>
+
+                <div id="drop" class="panel-collapse collapse">
+                    <form class="form-horizontal" action="/datasets/SUPERTABLE/{{ table }}/drop"  method="post" enctype="multipart/form-data">
+                    <table width="100%" style="margin: 0 10px;text-align: left;">
+                        <tr class="header"><th>
+                            <dl>
+                              {{ render_field(dropform.droptype) }}
+                              {{ render_field(dropform.dropselection) }}
+                          </dl>
+                        </th></tr>
+                    </table>
+                    <div class="panel-footer" style="text-align: center;">
+                        <strong style="text-align: center;"><button type="submit" class="btn btn-primary" style="margin: 10px 10%; width: 90%;" value="TwitterConfig">Drop Selection</button></strong>
+                    </div>
+                        </form>
+                </div>
+            </div>
+        </div>
+                </div>
+            </div>
+        </div>
+    <div class="panel-group" style="margin-top: 10%;">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title hovs" style="text-align: center;" data-toggle="collapse" href="#save">
+                        <span class="glyphicon glyphicon-save" aria-hidden="true" style="float: right;"></span>&nbsp;&nbsp;Save Table
+                    </h3>
+                </div>
+
+                <div id=save class="panel-collapse collapse">
+                   <div class="panel-group">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title hovs" style="text-align: center;" data-toggle="collapse" href="#savenew">
+                        <span class="glyphicon glyphicon-save" aria-hidden="true" style="float: right;"></span>&nbsp;&nbsp;Save As New Table
+                    </h3>
+                </div>
+
+                <div id="savenew" class="panel-collapse collapse">
+                    <form class="form-horizontal" action="/datasets/SUPERTABLE/{{ table }}/save_new"  method="post" enctype="multipart/form-data">
+                    <table width="100%" style="margin: 0 10px;text-align: left;">
+                        <tr class="header"><th>
+                            <dl>
+                              {{ render_field(savenew.name) }}
+                          </dl>
+                        </th></tr>
+                    </table>
+                    <div class="panel-footer" style="text-align: center;">
+                        <strong style="text-align: center;"><button type="submit" class="btn btn-primary" style="margin: 10px 10%; width: 90%;" value="TwitterConfig">Create Table</button></strong>
+                    </div>
+                        </form>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title hovs" style="text-align: center;" data-toggle="collapse" href="#push">
+                        <span class="glyphicon glyphicon-upload" aria-hidden="true" style="float: right;"></span>&nbsp;&nbsp;Drop Item
+                    </h3>
+                </div>
+
+                <div id="push" class="panel-collapse collapse">
+                    <form class="form-horizontal" action="/datasets/SUPERTABLE/{{ table }}/push"  method="post" enctype="multipart/form-data">
+                    <table width="100%" style="margin: 0 10px;text-align: left;">
+                        <tr class="header"><th>
+                            <dl>
+                              {{ render_field(pushform.password) }}
+                          </dl>
+                        </th></tr>
+                    </table>
+                    <div class="panel-footer" style="text-align: center;">
+                        <strong style="text-align: center;"><button type="submit" class="btn btn-primary" style="margin: 10px 10%; width: 90%;" value="TwitterConfig">Push Update</button></strong>
+                    </div>
+                        </form>
+                </div>
+            </div>
+        </div>
+                </div>
+            </div>
+        </div>
+    <div class="panel-group" style="margin-top: 10%;">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title hovs" style="text-align: center;" id="hide">
+                        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" style="text-align: center;"></span>&nbsp;Hide
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-sm-9" style="padding-right: 0; padding-left: 0;">
+    <div class="container-fluid" style="padding-right: 0; padding-left: 0;">
+        <div style="width: 100%;" id="mytble">
+        <table id="my_table" class="table">
+            <thead id="myheadd" style="position: absolute;">
+            <tr class="header">
+                <th style="width: 150px;"><div id="overlay">
+    <button class="btn btn-primary" id="show" style="margin-top: 10px; margin-left: 10px;">Settings</button>
+</div></th>
+            {% set z = superdata.1.0 %}
+                {% for k in range(z|length) %}
+                <th style="width: 150px;"><input type="text" id="{{z[k]}}" onkeyup="supersearcher('{{z[k]}}','my_table', '{{k+1}}')" placeholder="Search.." title="Search {{z[k]}}" style="width: 150px;margin: 10px 0;text-align: center;"></th>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td style="width: 150px;"></td>
+            {% set z = superdata.1.0 %}
+                {% for k in range(z|length) %}
+                <td style="width: 150px;"><strong style="text-align: center;" id="COL{{k+1}}"><input type="checkbox" name="row" value="L{{k+1}}" onchange="alerts('L{{k+1}}')">Column: {{k+1}}&nbsp;<input type="checkbox" name="row" value="R{{k+1}}" onchange="alerts('R{{k+1}}')"></strong></td>
+                {% endfor %}
+            </tr>
+            {% set x = superdata.1 %}
+                {% for i in range(x|length) %}
+                    {% set y = x[i] %}
+                    <tr>
+                    {% for k in range(y|length) %}
+                        {% if i == 0 %}
+                        {% if k == 0 %}
+                        <td style="width: 150px; overflow: hidden;"></td>
+                        {% endif %}
+                        <td style="width: 150px;overflow-x: hidden;"><strong style="text-align: center;" id="{{i}}'{{k+1}}">{{y[k]}}</strong></td>
+                        {% else %}
+                        {% if k == 0 %}
+                        <td style="width: 150px;"><input type="checkbox" name="row" value="{{k+1}}L" onchange="alerts('{{k+1}}L')"><strong id="ROW{{i}}">Row: {{i}}</strong><input type="checkbox" name="row" value="{{k+1}}R" onchange="alerts('{{k+1}}R')"></td>
+                        <td style="width: 150px;overflow-x: hidden;" contenteditable="true" id="{{i}}'{{k+1}}">{{y[k]}}</td>
+                        {% else %}
+                        <td style="width: 150px;overflow-x: hidden;" contenteditable="true" id="{{i}}'{{k+1}}" >{{y[k]}}</td>
+                        {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    </tr>
+            {% if i == 0 %}
+            </thead>
+            {% endif %}
+                {% endfor %}
+        </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

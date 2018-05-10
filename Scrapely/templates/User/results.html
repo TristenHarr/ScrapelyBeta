@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        #myTable {
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid #ddd;
+            font-size: 18px;
+        }
+
+        #myTable th, #myTable td {
+            text-align: left;
+            padding: 12px;
+        }
+
+        #myTable tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        #myTable tr.header, #myTable tr:hover {
+            background-color: #f1f1f1;
+        }
+
+    </style>
+</head>
+<body>
+<table id="myTable">
+    <tr class="header">
+        <th style="width:30%;"><input type="text" id="Tweet" onkeyup="main()" placeholder="Search by tweet.."
+                                      title="Type in a tweet">
+        </th>
+        <th>Actual Category</th>
+        <th>Predicted Category</th>
+        <th>Percent Correct: {{training['percent']}}</th>
+    </tr>
+    {% for i in range(training['guess']|length) %}
+    <tr>
+        <td>{{ training['plain_text'][i] }}</td>
+        <td>{{ training['answer'][i] }}</td>
+        <td>{{ training['guess'][i] }}</td>
+    <tr>
+        {% endfor %}
+</table>
+
+<script>
+function main() {
+    var array, array2, array3, array4, table, tr, i;
+    array = username_finder();
+    array2 = array.concat(userdesc_finder());
+    array3 = array2.concat(tweet_finder());
+    array4 = array3.concat(hashtag_finder());
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        if (array4.includes(i)){
+            tr[i].style.display = "none";
+        } else {
+            tr[i].style.display = "";
+        }
+    }
+}
+
+function tweet_finder() {
+  var input, filter, table, tr, td, i, maybe;
+  maybe = [];
+  input = document.getElementById("Tweet");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+      } else {
+        maybe.push(i)
+      }
+    }
+  }
+  return maybe;
+}
+
+
+</script>
+
+</body>
+</html>
