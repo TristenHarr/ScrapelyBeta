@@ -1,35 +1,60 @@
 import os
 dir_path = os.path.dirname(os.path.realpath(__file__))
-
 import sqlite3
 
 from passlib.hash import pbkdf2_sha256
 
 def make_password(password):
+    """
+    Takes a password upon account creation and hashed it and stores it in the database.
+    All password hashing is done using SHA256 encryption with a 16-bit salt.
+
+    :param password:
+    :return hashed_password:
+    """
     # TODO: Rewrite this, increase security, look into some kind of database-row rotations
     hashed = pbkdf2_sha256.encrypt(password, rounds=200000, salt_size=16)
     return hashed
 
-
 def check_password(password, hashed):
+    """
+    Takes a password and the accounts hash value and verifies password is valid
+    :param password:
+    :param hashed:
+    :return bool:
+    """
     return pbkdf2_sha256.verify(password, hashed)
 
 def config():
+    """
+    :Calls:
+    :return: Path of config file
+    """
     ABSOLUTE_PATH = dir_path+'/CONFIG.txt'
     return ABSOLUTE_PATH
 
 def directory():
+    """
+    Gets the current working directory
+    :return: CWD
+    """
     ABSOLUTE_PATH = dir_path
     return ABSOLUTE_PATH
 
 def go(Admin, Password):
+    """
+    :Calls: setup.py #137
+    :param Admin:
+    :param Password:
+    :return:
+    """
     file = open('CONFIG.txt', 'a')
     file.close()
-    from conf import Config
+    from Scrapely.conf import Config
     manager = Config()
     manager.setup_main_db()
     manager.set_users_db()
-    from conf import load_in
+    from Scrapely.conf import load_in
     settings = load_in()
     conn = sqlite3.connect(settings['MAIN_DB'])
     conn.execute("CREATE TABLE IF NOT EXISTS {tn} (id INTEGER,"
@@ -93,7 +118,7 @@ def go(Admin, Password):
         is_authenticated=0))
     conn.commit()
     conn.close()
-    from Manager._FileController import FileController
+    from Scrapely.Manager._FileController import FileController
     FileController().file_handler(Admin)
 
 

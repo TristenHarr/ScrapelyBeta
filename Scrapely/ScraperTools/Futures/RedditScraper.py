@@ -3,11 +3,7 @@ import requests
 import json
 
 
-username = "NeattoBot"
-password = "61314Fzs"
-client_id = "O89TWIj2YyOQDg"
-client_secret = "gdlcLnNq_ZGSebA1sf-aNCBiivU"
-user_agent = "Classification Bot"
+
 
 
 class RedditBot():

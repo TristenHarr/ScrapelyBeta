@@ -1,6 +1,6 @@
 import pandas as pd
 import sqlite3
-from conf import load_in
+from Scrapely.conf import load_in
 
 settings = load_in()
 
